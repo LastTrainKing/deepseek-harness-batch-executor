@@ -55,11 +55,11 @@ DSH scans skill directories in priority order; project-level wins over user-leve
 
 ```bash
 # user-level (available in every project)
-git clone https://github.com/<you>/deepseek-harness-batch-executor.git \
+git clone https://github.com/LastTrainKing/deepseek-harness-batch-executor.git \
     ~/.dsh/skills/deepseek-harness-batch-executor
 
 # or project-level (recommended for teams: commit the skill with the repo)
-git clone https://github.com/<you>/deepseek-harness-batch-executor.git \
+git clone https://github.com/LastTrainKing/deepseek-harness-batch-executor.git \
     <your-project>/.dsh/skills/deepseek-harness-batch-executor
 ```
 

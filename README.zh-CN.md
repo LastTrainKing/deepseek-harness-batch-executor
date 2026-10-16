@@ -40,11 +40,11 @@
 
 ```bash
 # 用户级（所有项目可用）
-git clone https://github.com/<you>/deepseek-harness-batch-executor.git \
+git clone https://github.com/LastTrainKing/deepseek-harness-batch-executor.git \
     ~/.dsh/skills/deepseek-harness-batch-executor
 
 # 项目级（推荐：随项目仓库一起提交）
-git clone https://github.com/<you>/deepseek-harness-batch-executor.git \
+git clone https://github.com/LastTrainKing/deepseek-harness-batch-executor.git \
     <项目>/.dsh/skills/deepseek-harness-batch-executor
 ```
 
