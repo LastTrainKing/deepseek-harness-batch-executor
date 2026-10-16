@@ -1,0 +1,21 @@
+{
+  "plan_id": "copy-configs",
+  "description": "Copy 8 config templates into build/configs, create the output directory, and verify the result by count and full tree hash.",
+  "overwrite": "if-different",
+  "operations": [
+    {"id": "op-1", "op": "mkdir", "path": "build/configs"},
+    {"id": "op-2", "op": "copy", "src": "templates/app.conf", "dst": "build/configs/app.conf"},
+    {"id": "op-3", "op": "copy", "src": "templates/db.conf", "dst": "build/configs/db.conf"},
+    {"id": "op-4", "op": "copy", "src": "templates/cache.conf", "dst": "build/configs/cache.conf"},
+    {"id": "op-5", "op": "copy", "src": "templates/logging.conf", "dst": "build/configs/logging.conf"},
+    {"id": "op-6", "op": "copy", "src": "templates/queue.conf", "dst": "build/configs/queue.conf"},
+    {"id": "op-7", "op": "copy", "src": "templates/storage.conf", "dst": "build/configs/storage.conf"},
+    {"id": "op-8", "op": "copy", "src": "templates/metrics.conf", "dst": "build/configs/metrics.conf"},
+    {"id": "op-9", "op": "copy", "src": "templates/features.conf", "dst": "build/configs/features.conf"},
+    {"id": "op-10", "op": "expect", "path": "build/configs/db.conf", "expect": {"exists": true}}
+  ],
+  "verify": [
+    {"type": "count", "pattern": "build/configs/*.conf", "expect": 8},
+    {"type": "tree-hash", "src": "templates", "dst": "build/configs"}
+  ]
+}
