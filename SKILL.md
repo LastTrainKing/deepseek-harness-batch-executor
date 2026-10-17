@@ -1,7 +1,7 @@
 ---
 name: deepseek-harness-batch-executor
-description: "Efficient tool execution for DeepSeek Harness: batches deterministic file operations into one scripted pass, compresses verbose tool output into summaries with on-demand deep reads, verifies results locally before reporting, and stops unproductive retry loops."
-whenToUse: "When a task needs many repetitive tool operations (batch copy/move/search/cleanup of files), when tool output would be large (log files, search hits, test or build runs), after modifying files when the effect must be verified, or when the same operation has been attempted repeatedly without success or without any state change."
+description: "Efficient tool execution for DeepSeek Harness: batches deterministic file operations into one scripted pass, compresses verbose tool output into summaries with on-demand deep reads, verifies results locally before reporting, and stops unproductive retry loops. / 面向 DeepSeek Harness 的高效执行技能：将确定性文件操作合并为单次脚本化执行、将冗长工具输出压缩为摘要并支持按需深读、汇报前在本地核验结果、及时停止无效重试循环。"
+whenToUse: "When a task needs many repetitive tool operations (batch copy/move/search/cleanup of files), when tool output would be large (log files, search hits, test or build runs), after modifying files when the effect must be verified, or when the same operation has been attempted repeatedly without success or without any state change. / 当任务包含大量重复的机械工具操作（批量复制/移动/搜索/清理文件）、单次工具调用会产生大量输出（日志、搜索结果、测试或构建输出）、修改文件后需要核验实际效果、或同一操作反复尝试却无成功或状态无变化时使用。"
 provider: "filesystem"
 disable-model-invocation: false
 userInvocable: true
