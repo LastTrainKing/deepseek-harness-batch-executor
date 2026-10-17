@@ -1,5 +1,14 @@
 # deepseek-harness-batch-executor
 
+> **简体中文**：面向 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) 的高效执行 Skill——让**模型只参与真正需要判断的步骤**，把确定性工作合并为一次脚本化执行（程序化工具调用 PTC 纪律），在汇报前**本地核验**结果（数量、sha256 树哈希、差异），并对无效重试**及时止损**。
+>
+> - 与 Harness 无关：**Python 3.8+ 纯标准库**，零依赖、不联网。
+> - 作为 DSH 原生 Skill 安装（`SKILL.md` + 辅助脚本），也可在任何能运行 Python 的 Agent 环境中直接使用。
+>
+> 📖 完整中文文档：[README.zh-CN.md](README.zh-CN.md)
+
+---
+
 Efficient tool execution for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`): a skill that keeps the **model in the loop only for steps that need judgment**, moves deterministic work into one scripted pass (the Programmatic Tool Calling discipline), verifies results **locally** before reporting, and **stops unproductive retry loops** instead of burning tokens on them.
 
 - Harness-agnostic scripts: **Python 3.8+, standard library only** — no pip install, no network.
