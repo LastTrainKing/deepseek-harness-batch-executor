@@ -1,0 +1,54 @@
+{
+  "name": "deepseek-harness-batch-executor",
+  "version": "1.0.0",
+  "description": "Efficient tool execution skill for DeepSeek Harness: batches deterministic file operations into one scripted pass, verifies results locally with counts and sha256 hashes, compresses verbose tool output into summaries with on-demand deep reads, and stops unproductive retry loops.",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "SKILL.md",
+    "scripts",
+    "references",
+    "examples",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-skill": "^0.2.0-rc.2"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "plugin",
+    "skill",
+    "agent",
+    "tool-calling",
+    "batch-processing",
+    "token-efficiency",
+    "programmatic-tool-calling"
+  ],
+  "scripts": {
+    "test": "node _selftest.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LastTrainKing/deepseek-harness-batch-executor.git"
+  },
+  "homepage": "https://github.com/LastTrainKing/deepseek-harness-batch-executor#readme",
+  "bugs": {
+    "url": "https://github.com/LastTrainKing/deepseek-harness-batch-executor/issues"
+  }
+}

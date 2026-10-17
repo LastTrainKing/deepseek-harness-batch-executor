@@ -38,6 +38,20 @@
 
 ## 安装
 
+### 作为 DeepSeek Harness 插件安装（推荐）
+
+仓库自带 `dsh.bundle` 清单（`package.json` + `cordis.patch.yml`），可作为原生插件安装，技能自动注册，无需手工拷贝：
+
+```bash
+dsh plugin add github:LastTrainKing/deepseek-harness-batch-executor
+```
+
+插件通过 `ctx.skills` 提供者接缝注册内置的 `SKILL.md`；`scripts/` 下的辅助脚本随包分发，按技能目录相对路径解析。本项目已收录于 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 插件目录（分类 `skill`）。
+
+### 作为普通技能克隆（目录扫描安装）
+
+不想走插件通道时，DSH 也会直接扫描技能目录（项目级优先于用户级）：
+
 ```bash
 # 用户级（所有项目可用）
 git clone https://github.com/LastTrainKing/deepseek-harness-batch-executor.git \
@@ -103,11 +117,12 @@ python scripts/loop_guard.py record --action "fix:src/db.py:line42" --result fai
 
 ```bash
 python tests/run_tests.py    # 22 个用例，标准库 unittest，约 7 秒
+node _selftest.mjs           # 插件冒烟测试（mock ctx.skills 接缝）
 ```
 
-覆盖：批量复制+数量与内容核验（T1）、幂等重跑（T2）、批量搜索摘要+完整日志+按需深读+长行截断（T3）、修改后哈希证据核验+差异（T4）、测试失败摘要提取+完整日志+深读+解析器单测+不编造计数（T5）、部分失败不得谎报成功+fail-fast（T6）、删除审批门+覆盖冲突（T7）、循环守卫 STOP/WARN/上限/状态（T8）、SKILL.md 元数据与目录合规（T9）。
+覆盖：批量复制+数量与内容核验（T1）、幂等重跑（T2）、批量搜索摘要+完整日志+按需深读+长行截断（T3）、修改后哈希证据核验+差异（T4）、测试失败摘要提取+完整日志+深读+解析器单测+不编造计数（T5）、部分失败不得谎报成功+fail-fast（T6）、删除审批门+覆盖冲突（T7）、循环守卫 STOP/WARN/上限/状态（T8）、SKILL.md 元数据与目录合规（T9）、插件注册（mock `ctx.skills`，验证 SKILL.md 被发现、正文被完整返回、中止信号被遵守）（P1）。
 
-**实际运行结果（2026-10-17，Python 3.13.14，Windows）：`Ran 22 tests ... OK`（全部通过）。** 未覆盖：真实 `dsh` 运行时内的行为、Token 计量、本地文件系统之外的权限模型。
+**实际运行结果（2026-10-17，Python 3.13.14 / Node 22，Windows）：`Ran 22 tests ... OK` 与 `selftest ok`（全部通过）。** 未覆盖：真实 `dsh` 运行时内的行为（开发环境无 dsh 实例；插件目标接缝为 `@deepseek-ai/dsh-skill` ^0.2.0-rc.2 提供者接缝，与已收录技能包插件一致）、Token 计量、本地文件系统之外的权限模型。
 
 ## 性能
 

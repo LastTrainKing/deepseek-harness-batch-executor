@@ -58,9 +58,19 @@ Native PTC note: DeepSeek Harness's Code Mode / programmatic tool calling does e
 
 ## Installation
 
-### As a DeepSeek Harness skill (recommended)
+### As a DeepSeek Harness plugin (recommended)
 
-DSH scans skill directories in priority order; project-level wins over user-level:
+The repository ships a `dsh.bundle` manifest (`package.json` + `cordis.patch.yml`), so it installs as a native plugin and the skill is registered automatically — no manual copying:
+
+```bash
+dsh plugin add github:LastTrainKing/deepseek-harness-batch-executor
+```
+
+The plugin registers the bundled `SKILL.md` through the `ctx.skills` provider seam; the helper scripts under `scripts/` ship inside the package and resolve relative to the skill directory. It is listed on the [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) directory (category `skill`).
+
+### As a plain skill (clone into the skill directories)
+
+If you prefer not to use the plugin channel, DSH also scans skill directories directly (project-level wins over user-level):
 
 ```bash
 # user-level (available in every project)
@@ -77,7 +87,7 @@ Equivalent locations that DSH also scans: `<project>/.agents/skills/` and `~/.ag
 ### As plain scripts (any harness / CI)
 
 ```bash
-git clone https://github.com/<you>/deepseek-harness-batch-executor.git
+git clone https://github.com/LastTrainKing/deepseek-harness-batch-executor.git
 cd deepseek-harness-batch-executor
 python scripts/batch_exec.py --plan examples/sample-plan.json   # try it
 ```
@@ -215,6 +225,7 @@ STOP is returned when the retry limit is reached, or when two consecutive attemp
 
 ```bash
 python tests/run_tests.py        # 22 tests, stdlib unittest, ~7s
+node _selftest.mjs               # plugin smoke test (mocked ctx.skills seam)
 ```
 
 Every test runs the real scripts as subprocesses against real fixtures in a temp directory. Scenarios:
@@ -230,8 +241,9 @@ Every test runs the real scripts as subprocesses against real fixtures in a temp
 | T7 | `remove` refused without `--approve`; executed with it; refused when plan omits `requires_approval`; `overwrite: never` conflict | pass |
 | T8 | Loop guard: identical-evidence repeat failure → STOP; retry limit → STOP; success-without-change → WARN; status/reset | pass |
 | T9 | SKILL.md metadata compliance with the DSH skill spec (name regex, required fields, section tags, repo layout) | pass |
+| P1 | Plugin registration: mock `ctx.skills`, assert the bundled SKILL.md is discovered (list), its body is served (get), and an aborted lookup rejects | pass |
 
-**Actual run (2026-10-17, Python 3.13.14, Windows 10): `Ran 22 tests ... OK`.** Uncovered: behavior inside a live `dsh` runtime (no dsh instance available in the development environment), token accounting, and network/permission models beyond the local filesystem.
+**Actual run (2026-10-17, Python 3.13.14 / Node 22, Windows 10): `Ran 22 tests ... OK` and `selftest ok`.** Uncovered: behavior inside a live `dsh` runtime (no dsh instance available in the development environment — the plugin targets the `@deepseek-ai/dsh-skill` ^0.2.0-rc.2 provider seam, the same seam other listed skill packs target), token accounting, and network/permission models beyond the local filesystem.
 
 ## Performance
 

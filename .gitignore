@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 
+# Node (plugin wrapper: package.json / lib/index.js / _selftest.mjs)
+node_modules/
+npm-debug.log*
+
 # Runtime artifacts produced by the skill scripts
 .dsh-batch-logs/
 .dsh-loop-guard/
