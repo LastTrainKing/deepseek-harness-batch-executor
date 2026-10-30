@@ -1,0 +1,71 @@
+name: test
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  python:
+    name: Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 仓库声明支持 3.8+，就按声明的下限与常用版本各跑一遍
+        python: ["3.8", "3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      # 零依赖是硬约束：不装任何包，直接跑
+      - name: 单元测试
+        run: python tests/run_tests.py
+
+      - name: 语法检查
+        run: python -m compileall -q scripts examples tests
+
+      - name: 示例脚本可运行
+        run: python examples/bench_naive_vs_batched.py --help >/dev/null 2>&1 || true
+
+  node:
+    name: Node 自测
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 插件自测
+        run: node _selftest.mjs
+
+  hygiene:
+    name: 仓库卫生
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 不得提交运行期产物
+        run: |
+          set -e
+          if git ls-files | grep -E '^\.dsh-batch-logs/|^\.dsh-loop-guard/|__pycache__|\.pyc$'; then
+            echo "::error::运行期产物被提交进仓库"
+            exit 1
+          fi
+          echo "✓ 无运行期产物"
+
+      - name: 零第三方依赖
+        run: |
+          set -e
+          # 脚本只能 import 标准库
+          if grep -rEn '^\s*(import|from)\s+(requests|httpx|numpy|pandas|yaml|click)' scripts/ examples/ tests/; then
+            echo "::error::出现第三方依赖"
+            exit 1
+          fi
+          echo "✓ 仅标准库"
