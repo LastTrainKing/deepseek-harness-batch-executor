@@ -8,13 +8,21 @@ on:
 
 jobs:
   python:
-    name: Python ${{ matrix.python }}
-    runs-on: ubuntu-latest
+    name: Python ${{ matrix.python }} @ ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        # 仓库声明支持 3.8+，就按声明的下限与常用版本各跑一遍
-        python: ["3.8", "3.10", "3.12"]
+        # 仓库声明支持 3.8+，就按声明的下限与常用版本各跑一遍。
+        # 3.8 必须跑在 ubuntu-22.04 上：ubuntu-latest(24.04) 的
+        # actions/setup-python 已不再提供 3.8 的预编译包，会直接失败。
+        include:
+          - python: "3.8"
+            os: ubuntu-22.04
+          - python: "3.10"
+            os: ubuntu-latest
+          - python: "3.12"
+            os: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
